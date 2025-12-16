@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  /* --- The Mondrian Palette --- */
+  --color-background: #f3f4f6; /* Paper/Off-white */
+  --color-surface: #ffffff;    /* Pure white cards */
+  --color-border: #000000;     /* Pitch black */
+  
+  /* Functional High-Sat Colors */
+  --color-primary: #3b82f6;    /* Knox Blue */
+  --color-warning: #eab308;    /* Knox Yellow */
+  --color-danger: #ef4444;     /* Knox Red */
+  --color-success: #22c55e;    /* Green */
+
+  /* --- Typography --- */
+  --font-sans: "Public Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* --- Neo-Brutalism Borders --- */
+  --border-width-3: 3px; 
+
+  /* --- Hard Shadows --- */
+  --shadow-hard: 4px 4px 0px 0px #000000;
+  --shadow-hard-sm: 2px 2px 0px 0px #000000;
+  --shadow-hard-lg: 8px 8px 0px 0px #000000;
+}
+
+/* --- Base Styles & Reset --- */
+@layer base {
+  body {
+    background-color: var(--color-background);
+    color: var(--color-border);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* The Neo-Brutalism Reset */
+  button, input, select, textarea {
+    font-weight: 700;
+    border-width: 3px;
+    border-color: var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--color-border);
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+
+  /* Interactive Elements: The "Tactile" Click */
+  button:active {
+    transform: translate(2px, 2px);
+    box-shadow: none !important;
+  }
+  
+  /* Headings */
+  h1, h2, h3, h4 {
+    font-weight: 900;
+    letter-spacing: -0.025em;
+  }
+}
