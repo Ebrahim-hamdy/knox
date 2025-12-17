@@ -107,7 +107,7 @@ export function ImportProposal() {
 					{error && (
 						<p className="mt-2 text-xs font-bold text-red-500">{error}</p>
 					)}
-					<div className="mt-4 flex gap-4">
+					<div className="mt-4 flex items-stretch gap-4">
 						<KnoxCard
 							asButton
 							disabled={!hasText}
@@ -115,7 +115,7 @@ export function ImportProposal() {
 							className={cn(
 								"flex w-16 items-center justify-center bg-white p-0",
 								!hasText &&
-									"cursor-not-allowed !bg-gray-100 text-gray-300 !shadow-none active:!translate-y-0"
+									"cursor-not-allowed bg-gray-100 text-gray-400 shadow-[2px_2px_0px_0px_#_d1d5db] active:translate-y-0 hover:-translate-y-0"
 							)}
 							onClick={() => {
 								if (hasText) {
@@ -132,7 +132,7 @@ export function ImportProposal() {
 							className={cn(
 								"flex flex-1 items-center justify-center text-center font-bold uppercase",
 								!hasText &&
-									"cursor-not-allowed !bg-gray-300 text-gray-500 !shadow-none active:!translate-y-0"
+									"cursor-not-allowed !bg-gray-300 text-gray-500 shadow-[2px_2px_0px_0px_#_9ca3af] active:translate-y-0 hover:-translate-y-0"
 							)}
 							onClick={handleImport}
 						>

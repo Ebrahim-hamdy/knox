@@ -1,6 +1,7 @@
 import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import { AppShell } from "@/components/layout/AppShell";
+import { BackupRestore } from "@/components/dashboard/BackupRestore";
 import { CreateVaultWizard } from "@/components/vaults/CreateVaultWizard";
 import { ImportProposal } from "@/components/dashboard/ImportProposal";
 import { KnoxCard } from "@/components/ui/knox-card";
@@ -89,6 +90,7 @@ function DashboardComponent() {
 					<div className="mt-12">
 						<ImportProposal />
 					</div>
+					<BackupRestore />
 				</>
 			)}
 		</AppShell>

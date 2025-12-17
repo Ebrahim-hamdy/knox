@@ -1,8 +1,8 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { ArrowLeft, Copy } from "lucide-react";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/layout/AppShell";
-import { Copy } from "lucide-react";
 import { KnoxCard } from "@/components/ui/knox-card";
 import { KnoxLoader } from "@/components/ui/knox-loader";
 import { SendModal } from "@/components/vaults/SendModal";
@@ -67,34 +67,45 @@ function VaultDetailComponent() {
 					}}
 				/>
 			)}
-
-			<div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-				<div>
-					<h2 className="text-4xl font-black uppercase tracking-tight">
-						{vault.name}
-					</h2>
-					<p className="mt-1 break-all font-mono text-sm text-gray-500">
-						{vault.address}
-					</p>
-					<button title="Copy Address" onClick={handleCopy}>
-						<Copy className="h-5 w-5 text-gray-400 hover:text-blue-500" />
-					</button>
-					{isCopied && (
-						<span className="text-xs font-bold text-blue-500">Copied!</span>
-					)}
-				</div>
-				<div className="flex gap-4">
-					<KnoxCard className="p-0 text-white" variant="active">
-						<button
-							className="px-6 py-3 font-bold uppercase tracking-wide disabled:cursor-not-allowed disabled:bg-gray-400"
-							disabled={!notes || notes.length === 0}
-							onClick={() => {
-								setSendModalOpen(true);
-							}}
-						>
-							Send
-						</button>
+			<div className="mb-8">
+				<Link className="no-underline" to="/dashboard">
+					<KnoxCard
+						asButton
+						className="mb-6 inline-flex w-auto items-center gap-2 px-4 py-2 text-xs"
+					>
+						<ArrowLeft className="h-4 w-4" />
+						Back to All Vaults
 					</KnoxCard>
+				</Link>
+
+				<div className="flex flex-wrap items-center justify-between gap-4">
+					<div>
+						<h2 className="text-4xl font-black uppercase tracking-tight">
+							{vault.name}
+						</h2>
+						<p className="mt-1 break-all font-mono text-sm text-gray-500">
+							{vault.address}
+						</p>
+						<button title="Copy Address" onClick={handleCopy}>
+							<Copy className="h-5 w-5 text-gray-400 hover:text-blue-500" />
+						</button>
+						{isCopied && (
+							<span className="text-xs font-bold text-blue-500">Copied!</span>
+						)}
+					</div>
+					<div className="flex gap-4">
+						<KnoxCard className="p-0 text-white" variant="active">
+							<button
+								className="px-6 py-3 font-bold uppercase tracking-wide disabled:cursor-not-allowed disabled:bg-gray-400"
+								disabled={!notes || notes.length === 0}
+								onClick={() => {
+									setSendModalOpen(true);
+								}}
+							>
+								Send
+							</button>
+						</KnoxCard>
+					</div>
 				</div>
 			</div>
 

@@ -1,5 +1,7 @@
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 
+import { ErrorBoundary } from "react-error-boundary";
+import { GlobalErrorBoundary } from "@/components/layout/ErrorBoundary";
 import { initWasm } from "@/lib/nockchain/wasm-loader";
 import { useEffect } from "react";
 
@@ -10,9 +12,11 @@ function RootComponent() {
 
 	return (
 		<>
-			<div className="min-h-screen bg-background font-sans text-border">
-				<Outlet />
-			</div>
+			<ErrorBoundary FallbackComponent={GlobalErrorBoundary}>
+				<div className="min-h-screen bg-background font-sans text-border">
+					<Outlet />
+				</div>
+			</ErrorBoundary>
 		</>
 	);
 }

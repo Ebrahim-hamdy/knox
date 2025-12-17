@@ -271,15 +271,23 @@ export function SendModal({ vault, notes, onClose }: SendModalProps) {
 	};
 
 	return (
-		<div className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in">
-			<div className="relative w-full max-w-lg animate-in fade-in zoom-in-95">
+		<div
+			className="fixed inset-0 z-40 flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in"
+			onClick={onClose}
+		>
+			<div
+				className="relative w-full max-w-lg animate-in fade-in zoom-in-95"
+				onClick={(e) => {
+					e.stopPropagation();
+				}}
+			>
 				<KnoxCard className="bg-white p-6">
 					<div className="mb-4 flex items-center justify-between">
 						<h2 className="text-2xl font-black uppercase">
 							Send from {vault.name}
 						</h2>
 						<button
-							className="text-2xl font-black leading-none"
+							className="flex h-8 w-8 items-center justify-center border-[3px] border-black text-2xl font-black leading-none transition-colors hover:bg-red-500 hover:text-white"
 							onClick={onClose}
 						>
 							&times;
