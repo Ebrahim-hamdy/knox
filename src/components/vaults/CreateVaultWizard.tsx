@@ -1,4 +1,4 @@
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, SlidersHorizontal, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 
@@ -53,8 +53,8 @@ export function CreateVaultWizard() {
 
 	const [wizardStep, setWizardStep] = useState(1);
 	const [vaultName, setVaultName] = useState("");
-	const [threshold, setThreshold] = useState(2);
-	const [signers, setSigners] = useState<Array<string>>(["", ""]);
+	const [threshold, setThreshold] = useState(1);
+	const [signers, setSigners] = useState<Array<string>>([""]);
 	const [error, setError] = useState<string | null>(null);
 	const [isSaving, setIsSaving] = useState(false);
 
@@ -64,28 +64,35 @@ export function CreateVaultWizard() {
 	} | null>(null);
 
 	useEffect(() => {
-		if (walletPkh && signers.some((s) => s === "")) {
-			const newSigners = [...signers];
-			const emptyIndex = newSigners.findIndex((s) => s === "");
-
-			if (emptyIndex !== -1 && !newSigners.includes(walletPkh)) {
-				newSigners[emptyIndex] = walletPkh;
-
-				setSigners(newSigners);
-			}
+		if (walletPkh && signers.length === 1 && signers[0] === "") {
+			setSigners([walletPkh]);
 		}
-	}, [walletPkh, signers]);
+	}, [signers, walletPkh]);
 
 	useEffect(() => {
-		const validSignersCount = signers.filter((s) => s.trim() !== "").length;
-		if (threshold > validSignersCount && validSignersCount > 0) {
-			setThreshold(validSignersCount);
+		if (threshold > signers.length) {
+			const diff = threshold - signers.length;
+			setSigners((prev) => [...prev, ...Array(diff).fill("")]);
+		}
+	}, [threshold, signers.length]);
+
+	const handleThresholdChange = (value: string) => {
+		let numValue = parseInt(value, 10);
+
+		if (isNaN(numValue)) {
+			numValue = 1;
 		}
 
-		if (validSignersCount === 1 && threshold < 1) {
-			setThreshold(1);
+		if (numValue < 1) {
+			numValue = 1;
 		}
-	}, [signers, threshold]);
+
+		if (numValue > 20) {
+			numValue = 20;
+		}
+
+		setThreshold(numValue);
+	};
 
 	const handleSignerChange = (index: number, value: string) => {
 		const newSigners = [...signers];
@@ -96,15 +103,24 @@ export function CreateVaultWizard() {
 	};
 
 	const handleAddSigner = () => {
-		setSigners([...signers, ""]);
+		setSigners((prev) => [...prev, ""]);
 	};
 
 	const handleRemoveSigner = (index: number) => {
-		if (signers.length <= 1) {
-			return;
-		}
+		if (signers.length <= 1) return;
+		const newSigners = signers.filter((_, i) => i !== index);
 
-		setSigners(signers.filter((_, i) => i !== index));
+		setSigners(newSigners);
+
+		if (threshold > newSigners.length) {
+			setThreshold(newSigners.length);
+		}
+	};
+
+	const handleSyncSignersToThreshold = () => {
+		if (threshold < signers.length) {
+			setSigners((prev) => prev.slice(0, threshold));
+		}
 	};
 
 	const validateAndProceed = (
@@ -287,17 +303,27 @@ export function CreateVaultWizard() {
 									type="number"
 									value={threshold}
 									onChange={(e) => {
-										const val = parseInt(e.target.value, 10);
-										if (val > 0) setThreshold(val);
+										handleThresholdChange(e.target.value);
 									}}
 								/>
 								<div className="flex items-center font-mono text-sm uppercase opacity-50">
 									of
 								</div>
-								<div className="flex items-center border-[3px] border-black bg-gray-200 px-6 py-3 font-mono font-bold text-gray-500">
+								<div className="relative flex items-center border-[3px] border-black bg-gray-200 px-6 py-3 font-mono font-bold text-gray-500">
 									{signers.length} Total
 								</div>
 							</div>
+							{signers.length > threshold && (
+								<div className="mt-2 animate-in fade-in slide-in-from-bottom-2">
+									<button
+										className="flex w-full items-center justify-center gap-2 border-[2px] border-dashed border-black bg-yellow-100 py-2 text-center font-mono text-xs font-bold uppercase text-black hover:border-solid hover:bg-yellow-200"
+										onClick={handleSyncSignersToThreshold}
+									>
+										<SlidersHorizontal className="h-4 w-4" />
+										Adjust Total to {threshold} to match Required
+									</button>
+								</div>
+							)}
 						</div>
 						<KnoxCard
 							asButton

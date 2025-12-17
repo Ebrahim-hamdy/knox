@@ -1,6 +1,6 @@
 import Dexie, { type Table } from "dexie";
 import type { decryptData, encryptData } from "./crypto";
-import type { NPST } from "@/types/npst";
+import type { NPST } from "@/types/npst-engine";
 
 interface EncryptedBlob {
 	iv: Array<number>;

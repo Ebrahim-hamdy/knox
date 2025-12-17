@@ -1,5 +1,5 @@
 import { Base64 } from "js-base64";
-import type { NPST } from "@/types/npst";
+import type { NPST } from "@/types/npst-engine";
 import pako from "pako";
 
 function jsonReplacer(key: string, value: unknown): unknown {
