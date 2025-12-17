@@ -1,0 +1,32 @@
+services:
+  knox-frontend:
+    image: knox-frontend-local:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile.frontend
+    container_name: knox-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - nockchain-miner
+      
+  nockchain-miner:
+    image: nockchain-local-devnet:latest
+    build:
+      context: .
+      dockerfile: ./knox-devnet/docker/Dockerfile
+    container_name: nockchain-miner
+    ports:
+      - "5555:5555"
+      - "8080:8080"
+    volumes:
+      - nockchain_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "nockchain-wallet --client private list-notes > /dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 45s
+
+volumes:
+  nockchain_data:

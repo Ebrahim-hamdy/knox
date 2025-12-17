@@ -2,6 +2,7 @@ import { Base64 } from "js-base64";
 import type { NPST } from "@/types/npst-engine";
 import pako from "pako";
 
+// @ts-expect-error: We must accept the 'key' parameter for the JSON.stringify replacer.
 function jsonReplacer(key: string, value: unknown): unknown {
 	if (value instanceof Uint8Array) {
 		return Array.from(value);
