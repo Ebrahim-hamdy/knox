@@ -2,8 +2,10 @@ import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 
 import { AppShell } from "@/components/layout/AppShell";
 import { CreateVaultWizard } from "@/components/vaults/CreateVaultWizard";
+import { ImportProposal } from "@/components/dashboard/ImportProposal";
 import { KnoxCard } from "@/components/ui/knox-card";
 import { KnoxLoader } from "@/components/ui/knox-loader";
+import { PendingProposals } from "@/components/dashboard/PendingProposals";
 import { VaultCard } from "@/components/vaults/VaultCard";
 import { useEffect } from "react";
 import { useVaultStore } from "@/store/vault-store";
@@ -81,6 +83,14 @@ function DashboardComponent() {
 					vaults.map((vault) => <VaultCard key={vault.id} vault={vault} />)
 				)}
 			</div>
+			{vaults.length > 0 && (
+				<>
+					<PendingProposals />
+					<div className="mt-12">
+						<ImportProposal />
+					</div>
+				</>
+			)}
 		</AppShell>
 	);
 }

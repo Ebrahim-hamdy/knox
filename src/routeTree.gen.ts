@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ProposalRouteImport } from './routes/proposal'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as VaultsVaultIdRouteImport } from './routes/vaults.$vaultId'
 
+const ProposalRoute = ProposalRouteImport.update({
+  id: '/proposal',
+  path: '/proposal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -32,35 +38,46 @@ const VaultsVaultIdRoute = VaultsVaultIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/proposal': typeof ProposalRoute
   '/vaults/$vaultId': typeof VaultsVaultIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/proposal': typeof ProposalRoute
   '/vaults/$vaultId': typeof VaultsVaultIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/dashboard': typeof DashboardRoute
+  '/proposal': typeof ProposalRoute
   '/vaults/$vaultId': typeof VaultsVaultIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/vaults/$vaultId'
+  fullPaths: '/' | '/dashboard' | '/proposal' | '/vaults/$vaultId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/vaults/$vaultId'
-  id: '__root__' | '/' | '/dashboard' | '/vaults/$vaultId'
+  to: '/' | '/dashboard' | '/proposal' | '/vaults/$vaultId'
+  id: '__root__' | '/' | '/dashboard' | '/proposal' | '/vaults/$vaultId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DashboardRoute: typeof DashboardRoute
+  ProposalRoute: typeof ProposalRoute
   VaultsVaultIdRoute: typeof VaultsVaultIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/proposal': {
+      id: '/proposal'
+      path: '/proposal'
+      fullPath: '/proposal'
+      preLoaderRoute: typeof ProposalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -88,6 +105,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DashboardRoute: DashboardRoute,
+  ProposalRoute: ProposalRoute,
   VaultsVaultIdRoute: VaultsVaultIdRoute,
 }
 export const routeTree = rootRouteImport
