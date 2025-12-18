@@ -126,10 +126,10 @@ Building this application required solving several non-trivial challenges inhere
 
 - **Sandboxed Testnet Engineering (The Faucet Problem)**
   A primary challenge for Nockchain development is the absence of a public faucet for its testnet, making it impossible for third-party developers to acquire `NOCK` tokens for testing. To overcome this, a complete, containerized local fakenet was engineered. After investigating existing community solutions and identifying several root causes for their instability (including coinbase maturity locks, wallet state desynchronization, and incompatible CLI tool versions), a custom, single-container solution was developed. This new architecture pins the `nockchain` build to a specific, stable commit where the CLI tools are compatible, finally allowing for the creation of a robust, automated faucet script. This rigorous debugging journey resulted in a reliable, sandboxed environment for true end-to-end testing.
-<br>
+
 - **Robust Wallet SDK Integration**
   The SDK's asynchronous nature required careful management. I solved a critical race condition between `connect()` and `signMessage()` by implementing a user-driven, two-step UI flow ("Connect", then "Sign"). I also built a robust error parser in the `wallet-store` to gracefully handle non-standard error objects from user-rejected signature requests.
-<br>
+
 - **WASM Memory Management**
   Interacting with the Rust-compiled WASM module required careful memory management. "Null pointer" errors were traced to incorrect handling of Rust's ownership model. The solution was to ensure that only the final, top-level WASM objects in a construction chain are explicitly freed (`.free()`), as the memory of intermediate objects is moved, not copied.
 
