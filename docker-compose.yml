@@ -13,8 +13,8 @@ services:
   nockchain-miner:
     image: nockchain-local-devnet:latest
     build:
-      context: .
-      dockerfile: ./knox-devnet/docker/Dockerfile
+      context: ./knox-devnet
+      dockerfile: ./docker/Dockerfile
     container_name: nockchain-miner
     ports:
       - "5555:5555"
@@ -22,7 +22,8 @@ services:
     volumes:
       - nockchain_data:/data
     healthcheck:
-      test: ["CMD-SHELL", "nockchain-wallet --client private list-notes > /dev/null || exit 1"]
+      # test: ["CMD-SHELL", "nockchain-wallet --client private list-notes > /dev/null || exit 1"]
+      test: ["CMD-SHELL", "nockchain-wallet status --client private --server-addr http://localhost:5555"]
       interval: 10s
       timeout: 5s
       retries: 30

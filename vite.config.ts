@@ -40,7 +40,13 @@ export default defineConfig({
 			],
 		}),
 		nodePolyfills({
-			include: ["buffer"],
+			exclude: [],
+			globals: {
+				Buffer: true,
+				global: true,
+				process: true,
+			},
+			protocolImports: true,
 		}),
 	],
 	resolve: {
@@ -51,5 +57,8 @@ export default defineConfig({
 	server: {
 		host: true,
 		strictPort: true,
+	},
+	define: {
+		"process.env": {},
 	},
 });

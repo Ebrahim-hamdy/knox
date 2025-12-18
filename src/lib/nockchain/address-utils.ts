@@ -40,9 +40,7 @@ export function pkStringToPkh(publicKeyString: string): string {
 	extendedKeyBytes.set(rawKeyBytes, 0);
 
 	try {
-		const pkhAddress = wasm.hashPublicKey(extendedKeyBytes);
-
-		return pkhAddress;
+		return wasm.hashPublicKey(extendedKeyBytes);
 	} catch (error) {
 		console.error(
 			`WASM failed to hash the constructed extended public key for input: "${publicKeyString}"`,

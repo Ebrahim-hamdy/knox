@@ -19,14 +19,17 @@ RUN curl -LO "https://github.com/protocolbuffers/protobuf/releases/download/v${P
   unzip "protoc-${PROTOC_VERSION}-linux-x86_64.zip" -d /usr/local && \
   rm "protoc-${PROTOC_VERSION}-linux-x86_64.zip"
 
-RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain stable
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 ENV PATH="/root/.cargo/bin:${PATH}"
 
 WORKDIR /build
-RUN git clone https://github.com/sigilante/nockchain.git && \
-  cd nockchain && \
-  make build-hoon-all && \
-  cargo build --release --bin nockchain --bin nockchain-wallet
+RUN git clone https://github.com/zorp-corp/nockchain.git
+
+WORKDIR /build/nockchain
+RUN make install-hoonc
+RUN make install-nockchain-wallet
+RUN make install-nockchain
+
 
 
 FROM ubuntu:22.04
@@ -47,11 +50,11 @@ RUN mkdir -p /data && chown -R nockchain:nockchain /data
 
 WORKDIR /data
 
-COPY --chown=nockchain:nockchain --from=builder /build/nockchain/target/release/nockchain /usr/local/bin/
-COPY --chown=nockchain:nockchain --from=builder /build/nockchain/target/release/nockchain-wallet /usr/local/bin/
+COPY --chown=nockchain:nockchain --from=builder /root/.cargo/bin/nockchain /usr/local/bin/
+COPY --chown=nockchain:nockchain --from=builder /root/.cargo/bin/nockchain-wallet /usr/local/bin/
 
-COPY --chown=nockchain:nockchain ./nockchain-dev-stack/docker/envoy.yaml /etc/envoy/envoy.yaml
-COPY --chown=nockchain:nockchain ./nockchain-dev-stack/docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY --chown=nockchain:nockchain ./docker/envoy.yaml /etc/envoy/envoy.yaml
+COPY --chown=nockchain:nockchain ./docker/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 
 USER nockchain

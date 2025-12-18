@@ -35,6 +35,17 @@ get_spendable_balance() {
     echo "${balance:-0}"
 }
 
+get_spendable_balance_for_pkh() {
+    local pkh=$1
+    local balance_output
+    balance_output=$(docker exec -u nockchain "$MINER_CONTAINER" nockchain-wallet $WALLET_FLAGS show-balance --pkh "$pkh" 2>&1)
+    
+    local balance
+    balance=$(echo "$balance_output" | grep "Balance:" | grep -Eo '[0-9]+')
+    
+    echo "${balance:-0}"
+}
+
 if [ -z "$1" ]; then
   echo "❌ Usage: ./fund_wallet.sh <YOUR_WALLET_ADDRESS_PKH>"
   exit 1
@@ -91,6 +102,7 @@ fi
 echo "--> Found coin: ${NOTE_NAME}. Preparing transaction to: ${RECIPIENT_PKH}"
 RECIPIENT_JSON="{\"kind\":\"p2pkh\",\"address\":\"$RECIPIENT_PKH\",\"amount\":$AMOUNT_NICKS}"
 
+echo "--> Creating transaction..."
 docker exec -u nockchain "$MINER_CONTAINER" nockchain-wallet $WALLET_FLAGS create-tx \
   --names "$NOTE_NAME" \
   --recipient "$RECIPIENT_JSON" \
@@ -101,5 +113,30 @@ TX_FILE=$(docker exec -u nockchain "$MINER_CONTAINER" ls -t /data | grep "\.jam$
 echo "--> Broadcasting transaction file: ${TX_FILE}"
 docker exec -u nockchain "$MINER_CONTAINER" nockchain-wallet $WALLET_FLAGS send-tx "/data/${TX_FILE}"
 
+echo "--> Waiting for next block for transaction confirmation..."
+initial_height=$(get_block_height)
+while true; do
+    height=$(get_block_height)
+    if [ "$height" -gt "$initial_height" ]; then
+        printf "\n--> Block %s mined. Transaction confirmed.\n" "$height"
+        break
+    fi
+    printf "    Current block height: %s. Waiting... \r" "$height"
+    sleep 5
+done
+
+echo "--> Verifying recipient balance..."
+# Reliable way to force a state update.
+docker exec -u nockchain "$MINER_CONTAINER" nockchain-wallet $WALLET_FLAGS import-keys --seedphrase "$SEED" --version 1 >/dev/null
+
+sleep 5
+final_balance=$(get_spendable_balance_for_pkh "$RECIPIENT_PKH")
+
 echo ""
+echo "✅ === Faucet Operation Complete === ✅"
+echo "------------------------------------------"
+echo "  Recipient Address: $RECIPIENT_PKH"
+echo "  Final Balance:     $final_balance nicks"
+echo "------------------------------------------"
+
 echo "🎉 Success! Funds sent. Your wallet balance will update shortly."

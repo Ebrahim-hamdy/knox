@@ -8,6 +8,9 @@ services:
     ports:
       - "5173:5173"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./src:/app/src
+      - node_modules_volume:/app/node_modules
     command: pnpm dev --host
+
+volumes:
+  node_modules_volume:
