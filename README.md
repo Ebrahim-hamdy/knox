@@ -168,7 +168,7 @@ Building this application required solving several non-trivial challenges inhere
   A primary challenge for Nockchain development is the absence of a public faucet for its testnet, making it impossible for third-party developers to acquire `NOCK` tokens for testing. To overcome this, a complete, containerized local fakenet was engineered. After investigating existing community solutions and identifying several root causes for their instability (including coinbase maturity locks, wallet state desynchronization, and incompatible CLI tool versions), a custom, single-container solution was developed. This new architecture pins the `nockchain` build to a specific, stable commit where the CLI tools are compatible, finally allowing for the creation of a robust, automated faucet script. This rigorous debugging journey resulted in a reliable, sandboxed environment for true end-to-end testing.
 
 - **Robust Wallet SDK Integration**
-  The asynchronous nature of wallet SDKs can lead to race conditions. This was solved by implementing a reactive, `useEffect`-based flow that listens for state changes from the wallet, ensuring UI transitions are reliable. Additionally, a robust error parser was built into the wallet store to gracefully handle non-standard error objects from user-rejected requests.
+  The SDK's asynchronous nature required careful management. I solved a critical race condition between `connect()` and `signMessage()` by implementing a user-driven, two-step UI flow ("Connect", then "Sign"). I also built a robust error parser in the `wallet-store` to gracefully handle non-standard error objects from user-rejected signature requests.
 
 - **WASM Memory Management**
   Interacting with the Rust-compiled WASM module required careful memory management. "Null pointer" errors were traced to incorrect handling of Rust's ownership model. The solution was to ensure that only the final, top-level WASM objects in a construction chain are explicitly freed (`.free()`), as the memory of intermediate objects is moved, not copied.
@@ -196,7 +196,7 @@ You can run the KNOX frontend for UI development or the entire stack for end-to-
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (version `v20.x` or higher, for local dev only)
+- [Node.js](https://nodejs.org/) (version `v22.x` or higher, for local dev only)
 - [pnpm](https://pnpm.io/) (for local dev only)
 - Docker & Docker Compose
 
