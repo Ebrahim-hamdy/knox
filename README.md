@@ -27,25 +27,44 @@ The architecture is a clean composition of four distinct, interacting components
 
 ```mermaid
 %%{ init: { 'theme': 'base', 'themeVariables': { 'background': '#f3f4f6', 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'lineColor': '#000000', 'primaryBorderColor': '#000000' } } }%%
+
 graph TD
-    subgraph "Client Environment"
-        A[<b>USER WALLET</b><br/>Key & Signature Management]:::black
-        B[<b>KNOX APPLICATION</b><br/>UI & State Orchestrator]:::white
-        C[<b>SECURE STORAGE</b><br/>Encrypted Client-Side Database]:::yellow
-    end
 
-    subgraph "Blockchain Network"
-        D[<b>NOCKCHAIN NODE</b><br/>WASM Runtime & gRPC API]:::blue
-    end
+subgraph "Client Environment"
 
-    A -- "Sign Auth & Transactions" --> B
-    B -- "Store/Retrieve Encrypted Data" --> C
-    B -- "Query Balances & Broadcast TX" --> D
+A[<b>USER WALLET</b><br/>Key & Signature Management]:::black
 
-    classDef white fill:#fff,stroke:#000,stroke-width:3px;
-    classDef black fill:#000,stroke:#000,stroke-width:3px,color:#fff;
-    classDef blue fill:#3b82f6,stroke:#000,stroke-width:3px,color:#fff;
-    classDef yellow fill:#eab308,stroke:#000,stroke-width:3px;
+B[<b>KNOX APPLICATION</b><br/>UI & State Orchestrator]:::white
+
+C[<b>SECURE STORAGE</b><br/>Encrypted Client-Side Database]:::yellow
+
+end
+
+  
+
+subgraph "NETWORK (The Reality)"
+
+D[<b>NOCKCHAIN NODE</b><br/>WASM + gRPC]:::blue
+
+end
+
+  
+
+A -- "Sign Auth & Transactions" --> B
+
+B -- "Store/Retrieve Encrypted Data" --> C
+
+B -- "Query Balances & Broadcast TX" --> D
+
+  
+
+classDef white fill:#fff,stroke:#000,stroke-width:3px;
+
+classDef black fill:#000,stroke:#000,stroke-width:3px,color:#fff;
+
+classDef blue fill:#3b82f6,stroke:#000,stroke-width:3px,color:#fff;
+
+classDef yellow fill:#eab308,stroke:#000,stroke-width:3px;
 ```
 <p align="center"><em>The four core architectural components and their interactions.</em></p>
 
