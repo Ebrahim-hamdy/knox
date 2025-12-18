@@ -18,15 +18,15 @@ KNOX was architected with a primary emphasis on **Usability and Intuitiveness**,
 ### Foundational Principles
 
 *   **Client-Side Sovereignty:** The foundational architectural decision was to build a purely client-side application. While many production multisig solutions utilize backends, this constraint was deliberately chosen to prove out the most critical security guarantees of a decentralized system. This approach forces a focus on zero-trust security and absolute user control, where all data is encrypted and stored locally on the user's own machine.
-<br>
+
 *   **Wallet-as-Authenticator Security Model:** The user's Iris Wallet is the root of trust. A cryptographic signature, approved by the user for each session, is used to derive a temporary, in-memory encryption key that protects all locally stored vault data.
 
 ### Intuitive User Experience
 
 *   **Guided, Wizard-Based Flows:** Both creating a vault and sending a transaction are handled through multi-step wizards. These flows guide the user, validate input at each step, and prevent them from getting into an invalid state, providing immediate and intuitive feedback.
-<br>
+
 *   **The Proposal Engine (Solving Decentralized UX):** The core usability challenge of a backend-less multisig wallet is coordination. This was solved by designing the Proposal Engine, which presents this complex problem to the user in three simple, universally understood formats: a **Magic Link** for easy sharing, a **QR Code** for secure, air-gapped workflows, and a **Text Blob** as a robust fallback.
-<br>
+
 *   **"Verify, Don't Trust" as a UX Feature:** Security and usability are intertwined. The application guarantees that every signer is presented with a clear, human-readable summary that is reconstructed from the raw transaction data upon import. This "what you see is what you sign" (WYSIWYS) principle gives users the confidence to approve transactions.
 
 ---
