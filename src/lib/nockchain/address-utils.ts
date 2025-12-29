@@ -9,6 +9,13 @@ const EXPECTED_WASM_EXTENDED_PK_LENGTH = 97;
  * to its corresponding Public Key Hash (PKH) address.
  */
 export function pkStringToPkh(publicKeyString: string): string {
+	const trimmedInput = publicKeyString.trim();
+
+	// eslint-disable-next-line no-use-before-define
+	if (isValidPkh(trimmedInput)) {
+		return trimmedInput;
+	}
+
 	let decodedSimpleKey: Uint8Array;
 	try {
 		decodedSimpleKey = bs58.decode(publicKeyString);

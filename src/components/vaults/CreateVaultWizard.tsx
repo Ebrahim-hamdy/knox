@@ -84,11 +84,11 @@ export function CreateVaultWizard() {
 		}
 
 		if (numValue < 1) {
-			numValue = 1;
+			numValue = Math.max(numValue, 1);
 		}
 
 		if (numValue > 20) {
-			numValue = 20;
+			numValue = Math.max(numValue, 20);
 		}
 
 		setThreshold(numValue);

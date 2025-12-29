@@ -29,7 +29,7 @@ export const generateVaultConfig = async (
 		spendCondition = new wasm.SpendCondition([pkhPrimitive]);
 
 		addressDigest = spendCondition.hash();
-		const address = addressDigest.value;
+		const address = spendCondition.firstName().value;
 
 		const spendConditionProtobuf = spendCondition.toProtobuf();
 
