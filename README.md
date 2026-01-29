@@ -2,15 +2,6 @@
 
 **KNOX is a secure, intuitive, and entirely client-side web application for managing Nockchain multisig vaults. It provides a seamless experience for creating shared vaults, proposing transactions, and coordinating signatures without ever trusting a central server.**
 
-Inspired by the principles of Neoplasticism, KNOX's design and architecture are reduced to their essential components, creating a clear, harmonious, and secure user experience.
-
-<p align="center">
-  <img src="./assets/knox-hero.png" alt="KNOX: A Modern Multisig Vault for Nockchain" width="700">
-  <br>
-  <em>Multiple keys (signers) combine to form a single, secure vault.</em>
-</p>
-
-
 ## Core Features & Design Decisions
 
 KNOX was architected with a primary emphasis on **Usability and Intuitiveness**, underpinned by non-negotiable **Security** and a robust **Client-Side Architecture**. The core design decisions and the features that emerge from them are detailed below.
